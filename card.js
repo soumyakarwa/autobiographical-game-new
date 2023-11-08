@@ -1,5 +1,5 @@
 class Card{
-    constructor(x, y, w, h, frontImg, backImg){
+    constructor(x, y, w, h, frontImg, backImg, backImgIdx){
         // frontImg, backImg){
         this.x = x; 
         this.y = y; 
@@ -7,8 +7,9 @@ class Card{
         this.h = h; 
         this.frontImg = frontImg; 
         this.backImg = backImg; 
-        this.isFaceUp = true; 
+        this.isFaceUp = false; 
         this.isMatched = false; 
+        this.backImgIdx = backImgIdx; 
         // this.front = color(150, 250, 250); 
         // this.back = color(250, 150, 250); 
         // this.frontImg = frontImg;

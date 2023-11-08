@@ -17,15 +17,16 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  board = new Board(20, 50, 50, frontImg, backImg);  
+  board = new Board(28, 50, 50, frontImg, backImg);  
   cardArray = board.drawCards(); 
+  cardArray = board.shuffleCards(); 
   // test = new Card(200, 200, 60, 90, frontImg, backImg[0]); 
 }
 
 function draw() {
   background(255); 
   // test.display(); 
-  board.displayCards(); 
+  board.displayCards(cardArray); 
 }
 
 function mousePressed(){
