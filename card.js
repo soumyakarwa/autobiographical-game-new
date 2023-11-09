@@ -1,6 +1,5 @@
 class Card{
-    constructor(x, y, w, h, frontImg, backImg, backImgIdx){
-        // frontImg, backImg){
+    constructor(x, y, w, h, frontImg, backImg){
         this.x = x; 
         this.y = y; 
         this.w = w;
@@ -9,11 +8,7 @@ class Card{
         this.backImg = backImg; 
         this.isFaceUp = false; 
         this.isMatched = false; 
-        this.backImgIdx = backImgIdx; 
-        // this.front = color(150, 250, 250); 
-        // this.back = color(250, 150, 250); 
-        // this.frontImg = frontImg;
-        // this.backImg = backImg; 
+        // this.backImgIdx = backImgIdx; 
     }
 
     display(){
@@ -23,9 +18,8 @@ class Card{
         else{
             image(this.frontImg, this.x, this.y, this.w, this.h);
         }
-        noFill(); // No fill for the rounded rectangle
-        stroke(220); // Match the background color
-        // strokeWeight(5); 
+        noFill(); 
+        stroke(255); 
         rect(this.x, this.y, this.w, this.h, 5);
     }
     

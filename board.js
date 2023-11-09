@@ -1,35 +1,35 @@
-var rectHeight = 100; 
-var rectWidth = 70; 
-var marginX = 10; 
-var marginY = 20; 
-var numberOfRows = 4; 
-let tally = [0,0,0,0,0,0,0]; 
-
 class Board{
-    constructor(number, x, y, frontImg, backImages){
+    constructor(number, x, y, w, h, frontImg, backImages, rectHeight, rectWidth, marginX, marginY, numberOfRows){
         this.number = number; 
         this.x = x; 
         this.y = y; 
-        this.cardArray = []; 
-        this.flippedCards = []; 
+        this.w = w; 
+        this.h = h; 
         this.frontImg = frontImg; 
         this.backImages = backImages; 
+        this.rectHeight = rectHeight; 
+        this.rectWidth = rectWidth; 
+        this.marginX = marginX; 
+        this.marginY = marginY; 
+        this.numberOfRows = numberOfRows;
+
+        this.cardArray = []; 
+        this.flippedCards = []; 
     }
 
     drawCards(){
-        let currX = this.x; 
-        let currY = this.y; 
-        let idx = 0; 
+        let currX = this.x+this.marginX; 
+        let currY = this.y+this.marginY; 
+        // let idx = 0; 
         for(let backImage of this.backImages){
             for(let j = 0; j < this.number/7; j++){
-                this.cardArray.push(new Card(currX, currY, rectWidth, rectHeight, frontImg, backImage, idx)); 
-                currX+= rectWidth+marginX; 
-                if(currX > this.x + (this.number/numberOfRows * (rectWidth+marginX)) - marginX){
-                    currX = this.x; 
-                    currY += rectHeight+marginY; 
+                this.cardArray.push(new Card(currX, currY, this.rectWidth, this.rectHeight, this.frontImg, backImage)); 
+                currX+= rectWidth+this.marginX; 
+                if(currX > this.x + (this.number/this.numberOfRows * (this.rectWidth+this.marginX)) - this.marginX){
+                    currX = this.x+this.marginX; 
+                    currY += rectHeight+this.marginY; 
                 }
             }
-            idx++; 
         }
         return this.cardArray; 
     }
@@ -52,6 +52,33 @@ class Board{
         for(let i = 0; i < this.number; i++){
             arr[i].display(); 
         }
+    }
+
+    animation(){
+        for (let i = 0; i < this.number; i++) {
+            // Consistently increment the angle for clockwise motion
+            let angle = frameCount * 0.015 + i * (TWO_PI / this.number);
+            let radius = noise(i, frameCount * 0.01) * 5*this.w/8;
+        
+            // Calculate position based on angle and radius
+            let tempX = this.x +  this.w / 2 + cos(angle) * radius;
+            let tempY = this.y + this.h / 2 + sin(angle) * radius;
+        
+            // if (tempX < 0 || tempX > this.w || tempY < 0 || tempY > this.h) {
+            //     dir[i] *= -1;
+            // }
+
+            // Apply transformation and rotation
+            push();
+            translate(tempX, tempY);
+            rotate(angle + HALF_PI/4); // Rotate the rectangle to align with the circle's tangent
+
+            this.cardArray[i].x = 0; 
+            this.cardArray[i].y = 0; 
+            this.cardArray[i].isFaceUp = true; 
+            this.cardArray[i].display(); 
+            pop();
+          }
     }
 
     checkingMatch(){
