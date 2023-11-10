@@ -1,5 +1,7 @@
 var board; 
+var control;
 var cardArray; 
+var bodyFont; 
 var frontImg; 
 var backImg = []; 
 var boardRect ={x:0, y:0, width:0, height:0};  
@@ -16,6 +18,7 @@ var startingYPos;
 
 function preload(){
   frontImg = loadImage("./assets/cardCover.jpg");
+  bodyFont = loadFont("./fonts/Cardo/Cardo-Regular.ttf");
   backImg[0] = loadImage("./assets/painting1.jpeg"); 
   backImg[1] = loadImage("./assets/painting2.jpeg"); 
   backImg[2] = loadImage("./assets/painting3.png"); 
@@ -36,9 +39,10 @@ function draw() {
   fill(255);
   noStroke(); 
   rect(boardRect.x, boardRect.y, boardRect.width, boardRect.height);
-  // board.displayCards(cardArray); 
-  board.animation(); 
+  control.display(); 
+  board.gamePlay(); 
   // stroke(0); 
+  // board.displayCards(cardArray); 
   // grid(); 
   // fill(0);  
   // ellipse(50, 50, 5); 
@@ -63,16 +67,15 @@ function grid() {
 
 
 function mousePressed(){
-  // for(let i = 0; i < cardArray.length; i++){
-  //   cardArray[i].flipCard();
-  // }
+  for(let i = 0; i < cardArray.length; i++){
+    cardArray[i].flipCard();
+  }
 }
 
 function setupHelper(){
   board = new Board(numberOfCards, cardHolder.x, cardHolder.y, cardHolder.width, cardHolder.height, frontImg, backImg, rectHeight, rectWidth, marginX, marginY, numberOfRows);  
-  cardArray = board.drawCards(); 
-  cardArray = board.shuffleCards();
-  cardArray = board.shuffleCards();
+  control = new Control(6/8*windowWidth, 0, 2/8*windowWidth, windowHeight, board); 
+  cardArray = board.boardSetup(); 
 }
 
 function setupCalculations(){
@@ -85,7 +88,4 @@ function setupCalculations(){
   boardRect.x = (windowWidth-boardRect.width)/3; 
   cardHolder.x = boardRect.x+(boardRect.width-cardHolder.width)/2; 
   cardHolder.y = boardRect.y+(boardRect.height-cardHolder.height)/2; 
-}
-
-function cardAnimation(){
 }
