@@ -1,5 +1,5 @@
 class Board{
-    constructor(number, x, y, w, h, frontImg, backImages, rectHeight, rectWidth, marginX, marginY, numberOfRows){
+    constructor(number, x, y, w, h, frontImg, backImages, rectHeight, rectWidth, marginX, marginY, numberOfRows, startTime){
         this.stage = 0; 
         this.number = number; 
         this.x = x; 
@@ -14,9 +14,25 @@ class Board{
         this.marginY = marginY; 
         this.animationIsOn = true; 
         this.numberOfRows = numberOfRows;
+        this.startTime = startTime; 
+
         this.cardArray = []; 
         this.flippedCards = []; 
         this.animationCards = []; 
+        this.finalX = []; 
+        this.finalY = []; 
+
+        let currX = this.x+this.marginX; 
+        let currY = this.y+this.marginY; 
+        for(let i = 0; i < this.number; i++){
+            this.finalX[i] = currX; 
+            this.finalY[i] = currY; 
+            currX+= this.rectWidth+this.marginX; 
+            if(currX > this.x + (this.number/this.numberOfRows * (this.rectWidth+this.marginX)) - this.marginX){
+                currX = this.x+this.marginX; 
+                currY += this.rectHeight+this.marginY; 
+            }
+        }
         for (let i = 0; i < this.number; i++) {
             this.animationCards[i] = {
               angle: frameCount * 0.02 + i * (TWO_PI / this.number),
@@ -38,55 +54,38 @@ class Board{
                 this.landingAnimation(); 
                 break; 
             case 1: 
-                this.displayCards(this.x +  this.w / 2, this.y + this.h / 2); 
+                this.displayCards(); 
                 break; 
                 // draw , shuffle and display cards in their position + animation
-            // case 2:
+            case 2:
+                console.log("stage 2"); 
                 // game play 
             // case 3: 
                 // game over, restart options
         }
     }
 
-    drawCards(){
-        let currX = this.x+this.marginX; 
-        let currY = this.y+this.marginY; 
-        for(let backImage of this.backImages){
-            for(let j = 0; j < this.number/7; j++){
-                this.cardArray.push(new Card(currX, currY, this.rectWidth, this.rectHeight, this.frontImg, backImage)); 
-                currX+= rectWidth+this.marginX; 
-                if(currX > this.x + (this.number/this.numberOfRows * (this.rectWidth+this.marginX)) - this.marginX){
-                    currX = this.x+this.marginX; 
-                    currY += rectHeight+this.marginY; 
-                }
+    displayCards(){
+        let elapsedTime = millis() - this.startTime;
+        let delay = 100; // Delay in milliseconds between each rectangle animation
+
+        for (let i = 0; i < this.number; i++) {
+            // Calculate the start time for each rectangle's animation
+            let rectStartTime = 10000 + i * delay;
+            console.log(i); 
+            if (elapsedTime <= rectStartTime) {
+                // Before the rectangle's start time, just display it in the initial position
+                this.cardArray[i].x = this.x + this.w/2; 
+                this.cardArray[i].y = this.y + this.h/2; 
+                this.cardArray[i].isFaceUp = false; 
+                this.cardArray[i].display();
+            } else {
+                console.log(this.cardArray[i].isFaceUp); 
+                // Start animating the rectangle
+                this.cardArray[i].x = lerp(this.cardArray[i].x, this.finalX[i], 0.1);
+                this.cardArray[i].y = lerp(this.cardArray[i].y, this.finalY[i], 0.1);
+                this.cardArray[i].display();
             }
-        }
-        return this.cardArray; 
-    }
-
-    shuffleCards(){
-        let currentIndex = this.cardArray.length; 
-        let temporaryValue; 
-        let randomIndex;
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            temporaryValue = this.cardArray[currentIndex].backImg;
-            this.cardArray[currentIndex].backImg = this.cardArray[randomIndex].backImg;
-            this.cardArray[randomIndex].backImg = temporaryValue;
-        } 
-    return this.cardArray;
-    }
-
-    displayCards(x, y){
-        // this.drawCards(); 
-        // this.shuffleCards(); 
-        // this.shuffleCards(); 
-        for(let i = 0; i < this.number; i++){
-            this.cardArray[i].x = x; 
-            this.cardArray[i].y = y; 
-            this.cardArray[i].isFaceUp = false; 
-            this.cardArray[i].display(); 
         }
     }
 
@@ -120,7 +119,6 @@ class Board{
         }
 
         if (this.animationCards.every(card => Math.abs(card.radius) < 0.01)) {
-            console.log("passed");
             this.stage = 1;
         }   
     }   
@@ -156,4 +154,27 @@ class Board{
         // }
     }
     
+    drawCards(){
+        for(let backImage of this.backImages){
+            for(let j = 0; j < this.number/7; j++){
+                this.cardArray.push(new Card(0, 0, this.rectWidth, this.rectHeight, this.frontImg, backImage)); 
+            }
+        }
+        return this.cardArray; 
+    }
+
+    shuffleCards(){
+        let currentIndex = this.cardArray.length; 
+        let temporaryValue; 
+        let randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = this.cardArray[currentIndex].backImg;
+            this.cardArray[currentIndex].backImg = this.cardArray[randomIndex].backImg;
+            this.cardArray[randomIndex].backImg = temporaryValue;
+        } 
+    return this.cardArray;
+    }
+
 }

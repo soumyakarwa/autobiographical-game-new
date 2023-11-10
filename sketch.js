@@ -1,5 +1,6 @@
 var board; 
 var control;
+var startTime; 
 var cardArray; 
 var bodyFont; 
 var frontImg; 
@@ -73,7 +74,8 @@ function mousePressed(){
 }
 
 function setupHelper(){
-  board = new Board(numberOfCards, cardHolder.x, cardHolder.y, cardHolder.width, cardHolder.height, frontImg, backImg, rectHeight, rectWidth, marginX, marginY, numberOfRows);  
+  startTime = millis();
+  board = new Board(numberOfCards, cardHolder.x, cardHolder.y, cardHolder.width, cardHolder.height, frontImg, backImg, rectHeight, rectWidth, marginX, marginY, numberOfRows, startTime);  
   control = new Control(6/8*windowWidth, 0, 2/8*windowWidth, windowHeight, board); 
   cardArray = board.boardSetup(); 
 }
