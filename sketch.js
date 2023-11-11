@@ -14,8 +14,8 @@ var startingXPos;
 var startingYPos; 
 
 function preload(){
-  frontImg = loadImage("./assets/cardCover.jpg");
   bodyFont = loadFont("./fonts/Cardo/Cardo-Regular.ttf");
+  frontImg = loadImage("./assets/cardCover.jpg");
   backImg[0] = loadImage("./assets/painting1.jpeg"); 
   backImg[1] = loadImage("./assets/painting2.jpeg"); 
   backImg[2] = loadImage("./assets/painting3.png"); 
@@ -23,6 +23,14 @@ function preload(){
   backImg[4] = loadImage("./assets/painting5.jpeg"); 
   backImg[5] = loadImage("./assets/painting6.jpeg"); 
   backImg[6] = loadImage("./assets/painting7.jpeg"); 
+  // frontImg = "./assets/cardCover.jpg";
+  // backImg[0] = "./assets/painting1.jpeg"; 
+  // backImg[1] = "./assets/painting2.jpeg"; 
+  // backImg[2] = "./assets/painting3.png"; 
+  // backImg[3] = "./assets/painting4.jpeg"; 
+  // backImg[4] = "./assets/painting5.jpeg"; 
+  // backImg[5] = "./assets/painting6.jpeg"; 
+  // backImg[6] = "./assets/painting7.jpeg"; 
 }
 
 function setup() {

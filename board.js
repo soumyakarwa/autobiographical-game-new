@@ -59,17 +59,60 @@ class Board{
                 this.cardDeck(); 
                 break; 
             case 1: 
+                // draw , shuffle and display cards in their position + animation
                 console.log("stage 1"); 
                 this.dealCards(); 
                 break; 
-                // draw , shuffle and display cards in their position + animation
             case 2:
                 console.log("stage 2"); 
+                this.checkingMatch(); 
+                break;
                 // game play 
             // case 3: 
                 // game over, restart options
         }
     }
+
+    checkingMatch() {
+        for (let card of cardArray) {
+            card.update(); // Update the card's state (for the flip animation)
+            card.display(); // Display the card
+    
+            // Check if the card is clicked, not already flipped, and not currently flipping
+            if (!card.isFaceUp && !card.flipping && !card.isMatched && 
+                mouseX < card.w + card.x && mouseX > card.x && 
+                mouseY < card.y + card.h && mouseY > card.y) {
+                
+                if (this.flippedCards.length < 2) {
+                    card.flipCard();
+                    this.flippedCards.push(card);
+                }
+            }
+        }
+    
+        // If two cards are flipped, check for a match
+        if (this.flippedCards.length === 2 && !this.flippedCards[0].flipping && !this.flippedCards[1].flipping) {
+            this.checkForMatch();
+        }
+    }
+    
+    checkForMatch() {
+        // Check for a match based on a property like backImgIdx
+        if (this.flippedCards[0].backImgIdx === this.flippedCards[1].backImgIdx) {
+            // Cards match
+            this.flippedCards.forEach(c => c.isMatched = true);
+        } else {
+            // Cards don't match, flip them back over after a delay
+            setTimeout(() => {
+                this.flippedCards.forEach(c => {
+                    c.isFaceUp = false; // Flip back the card
+                    c.flipping = true; // Start the flip animation
+                });
+            }, 1000); // Set a delay of 1 second
+        }
+        this.flippedCards = []; // Reset the flipped cards array
+    }
+    
 
     dealCards(){
         let elapsedTime = millis() - this.startTime;
@@ -80,16 +123,18 @@ class Board{
             // Calculate the start time for each rectangle's animation
             let rectStartTime = 2000 + i * delay;
                 // Start animating the rectangle
-                if (elapsedTime <= rectStartTime) {
-                    // Before the rectangle's start time, just display it in the initial position
-                    this.cardArray[i].display();
-                  } else {
-                    // Start animating the rectangle
-                    this.cardArray[i].x = lerp(this.cardArray[i].x, this.finalX[i], 0.1);
-                    this.cardArray[i].y = lerp(this.cardArray[i].y, this.finalY[i], 0.1);
-                    this.cardArray[i].display();
-                  }
+            if (elapsedTime <= rectStartTime) {
+                this.cardArray[i].display();
+            } else {
+                this.cardArray[i].x = lerp(this.cardArray[i].x, this.finalX[i], 0.1);
+                this.cardArray[i].y = lerp(this.cardArray[i].y, this.finalY[i], 0.1);
+                this.cardArray[i].display();
+            }
         }
+        if (this.cardArray.every((card, i) => dist(card.x, card.y, this.finalX[i], this.finalY[i]) < 0.01)) {
+            this.stage = 2;
+        }  
+        
     }
 
     cardDeck(){
@@ -141,39 +186,14 @@ class Board{
     endAnimation(){
         this.animationIsOn = false;
     }
-
-    checkingMatch(){
-        // flip two cards, if the cards match then leave them faceUp. 
-        // for (let card of cardArray) {
-        //     if (/* the mouse is over the card and it is not already matched or face up */) {
-        //         cardCard.flip();
-        //         flippedCards.push(card);
-              
-        //         if (flippedCards.length === 2) {
-        //         // Check for a match
-        //             if (/* flippedCards[0] matches flippedCards[1] */) {
-        //           // Handle match case
-        //             flippedCards.forEach(c => c.isMatched = true);
-        //             flippedCards = []; // Reset the flipped cards
-        //         } else {
-        //           // If not a match, flip them back after a delay
-        //           setTimeout(() => {
-        //             flippedCards.forEach(c => c.flip());
-        //             flippedCards = []; // Reset the flipped cards
-        //           }, 1000); // Set a delay of 1 second
-        //         }
-        //       }
-              
-        //       break; // Only allow flipping one card per click
-        //     }
-        // }
-    }
     
     drawCards(){
+        let idx = 0; 
         for(let backImage of this.backImages){
             for(let j = 0; j < this.number/7; j++){
-                this.cardArray.push(new Card(this.x+this.marginX, this.y+this.h-this.rectHeight-this.marginY, this.rectWidth, this.rectHeight, this.frontImg, backImage)); 
+                this.cardArray.push(new Card(this.x+this.marginX, this.y+this.h-this.rectHeight-this.marginY, this.rectWidth, this.rectHeight, this.frontImg, backImage, idx)); 
             }
+            idx++; 
         }
         return this.cardArray; 
     }
