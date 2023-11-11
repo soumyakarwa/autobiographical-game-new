@@ -6,11 +6,7 @@ var bodyFont;
 var frontImg; 
 var backImg = []; 
 var boardRect ={x:0, y:0, width:0, height:0};  
-var cardHolder = {x:0, y:0, width:0, height:0}
-var rectWidth = 70; 
-var rectHeight = 100; 
-var marginX = 30; 
-var marginY = 10; 
+var cardRect ={x:0, y:0, width:0, height:0};  
 var numberOfCards = 56; 
 var numberOfColumns = 8; 
 var numberOfRows; 
@@ -30,16 +26,18 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  let myCanvas = createCanvas(windowWidth - remToPixels(1), windowHeight-remToPixels(1)); 
+  myCanvas.parent('canvas-container'); 
   setupCalculations();
   setupHelper(); 
 }
 
 function draw() {
   background(255); 
-  fill(255);
   noStroke(); 
-  rect(boardRect.x, boardRect.y, boardRect.width, boardRect.height);
+  // // fill(255);
+  // noStroke(); 
+  // rect(boardRect.x, boardRect.y, boardRect.width, boardRect.height);
   control.display(); 
   board.gamePlay(); 
   // stroke(0); 
@@ -75,19 +73,25 @@ function mousePressed(){
 
 function setupHelper(){
   startTime = millis();
-  board = new Board(numberOfCards, cardHolder.x, cardHolder.y, cardHolder.width, cardHolder.height, frontImg, backImg, rectHeight, rectWidth, marginX, marginY, numberOfRows, startTime);  
-  control = new Control(6/8*windowWidth, 0, 2/8*windowWidth, windowHeight, board); 
+  console.log(startTime); 
+  board = new Board(numberOfCards, boardRect.x, boardRect.y, boardRect.width, boardRect.height, frontImg, backImg, remToPixels(1), remToPixels(1), numberOfRows, startTime);  
+  control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board); 
   cardArray = board.boardSetup(); 
 }
 
 function setupCalculations(){
   numberOfRows = numberOfCards/numberOfColumns; 
-  boardRect.height = windowHeight; 
+  boardRect.height = height; 
+  boardRect.width = 2*(width-remToPixels(0.5))/3;
   boardRect.y = 0; 
-  cardHolder.width = (numberOfColumns*rectWidth + (numberOfColumns+1)*marginX); 
-  cardHolder.height = (numberOfRows*rectHeight + (numberOfRows+1)*marginY); 
-  boardRect.width = cardHolder.width; 
-  boardRect.x = (windowWidth-boardRect.width)/3; 
-  cardHolder.x = boardRect.x+(boardRect.width-cardHolder.width)/2; 
-  cardHolder.y = boardRect.y+(boardRect.height-cardHolder.height)/2; 
+  boardRect.x = 0; 
+
+  cardRect.height = height;
+  cardRect.width = 1*(width-remToPixels(0.5))/3;
+  cardRect.x = 2*(width)/3 + remToPixels(0.5); 
+  cardRect.y = 0; 
+}
+
+function remToPixels(rem) {    
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }

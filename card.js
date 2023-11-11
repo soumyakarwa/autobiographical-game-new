@@ -18,9 +18,9 @@ class Card{
         else{
             image(this.frontImg, this.x, this.y, this.w, this.h);
         }
-        noFill(); 
-        stroke(255); 
-        rect(this.x, this.y, this.w, this.h, 5);
+        // noFill(); 
+        // stroke(255); 
+        // rect(this.x, this.y, this.w, this.h, 5);
     }
     
     flipCard(){

@@ -6,10 +6,13 @@ class Control{
         this.h = h;
         this.board = board; 
         this.button = createButton("START"); 
+        
     }
 
     display(){
         this.buttonFunctionality(); 
+        fill(100, 100, 100); 
+        rect(this.x, this.y, this.w, this.h); 
     }
 
     buttonFunctionality(){

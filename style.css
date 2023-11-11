@@ -7,6 +7,17 @@ canvas {
   display: block;
 }
 
+#canvas-container {
+  display: flex; /* Enable Flexbox */
+  flex-direction: row; /* Align children in a row */
+  justify-content: space-between; /* Space between the children */
+  align-items: stretch; /* Stretch children to fill the height */
+  margin: 0.5rem; /* Margin around the entire container */
+  max-width: calc(100vw - 1rem);
+  max-height: calc(100vh - 1rem);
+  overflow: hidden;
+}
+
 .button {
   text-align: 'center';
   background-color: #772E25;
