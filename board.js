@@ -1,5 +1,5 @@
 class Board{
-    constructor(number, x, y, w, h, frontImg, backImages, marginX, marginY, numberOfRows, startTime){
+    constructor(number, x, y, w, h, frontImg, backImages, marginX, marginY, numberOfRows){
         this.stage = 0; 
         this.number = number; 
         this.x = x; 
@@ -10,7 +10,6 @@ class Board{
         this.backImages = backImages; 
         this.animationIsOn = true; 
         this.numberOfRows = numberOfRows;
-        this.startTime = startTime; 
         
         this.rectWidth = 72; 
         this.rectHeight = 102; 
@@ -21,6 +20,7 @@ class Board{
         this.animationCards = []; 
         this.finalX = []; 
         this.finalY = []; 
+        this.dealStartTime; 
 
         let currX = this.x+5*this.marginX+this.rectWidth; 
         let currY = this.y+this.marginY; 
@@ -56,6 +56,7 @@ class Board{
         switch(this.stage){
             case 0:
                 // this.landingAnimation(); 
+                console.log("stage 0"); 
                 this.cardDeck(); 
                 break; 
             case 1: 
@@ -115,17 +116,19 @@ class Board{
     
 
     dealCards(){
-        let elapsedTime = millis() - this.startTime;
-        // console.log(elapsedTime); 
+        if (!this.dealStartTime) this.dealStartTime = millis();
+        let elapsedTime = millis() - this.dealStartTime;
+        
         let delay = 150; // Delay in milliseconds between each rectangle animation
 
         for (let i = 0; i < this.number; i++) {
             // Calculate the start time for each rectangle's animation
             let rectStartTime = 2000 + i * delay;
-                // Start animating the rectangle
             if (elapsedTime <= rectStartTime) {
+                console.log("card deck displayed in initial position"); 
                 this.cardArray[i].display();
             } else {
+                console.log("cards are starting to spread out"); 
                 this.cardArray[i].x = lerp(this.cardArray[i].x, this.finalX[i], 0.1);
                 this.cardArray[i].y = lerp(this.cardArray[i].y, this.finalY[i], 0.1);
                 this.cardArray[i].display();
@@ -140,6 +143,7 @@ class Board{
     cardDeck(){
         if(this.animationIsOn){
             for(let i = 0; i < this.number; i++){
+                console.log(i, this.cardArray[i].x, this.cardArray[i].y); 
                 this.cardArray[i].display();
             }
         }

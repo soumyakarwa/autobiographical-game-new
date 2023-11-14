@@ -80,9 +80,8 @@ function mousePressed(){
 }
 
 function setupHelper(){
-  startTime = millis();
   console.log(startTime); 
-  board = new Board(numberOfCards, boardRect.x, boardRect.y, boardRect.width, boardRect.height, frontImg, backImg, remToPixels(1), remToPixels(1), numberOfRows, startTime);  
+  board = new Board(numberOfCards, boardRect.x, boardRect.y, boardRect.width, boardRect.height, frontImg, backImg, remToPixels(1), remToPixels(1), numberOfRows);  
   control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board); 
   cardArray = board.boardSetup(); 
 }
