@@ -43,9 +43,6 @@ function setup() {
 function draw() {
   background(255); 
   noStroke(); 
-  // // fill(255);
-  // noStroke(); 
-  // rect(boardRect.x, boardRect.y, boardRect.width, boardRect.height);
   control.display(); 
   board.gamePlay(); 
   // stroke(0); 
@@ -72,15 +69,18 @@ function grid() {
   pop();
 }
 
-
 function mousePressed(){
+  let checkFlip; 
   for(let i = 0; i < cardArray.length; i++){
-    cardArray[i].flipCard();
+    checkFlip = cardArray[i].flipCard();
+    if(checkFlip){
+      cardArray[i].flipped = !cardArray[i].flipped; 
+    }
+    console.log(i, cardArray[i].flipped); 
   }
 }
 
 function setupHelper(){
-  console.log(startTime); 
   board = new Board(numberOfCards, boardRect.x, boardRect.y, boardRect.width, boardRect.height, frontImg, backImg, remToPixels(1), remToPixels(1), numberOfRows);  
   control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board); 
   cardArray = board.boardSetup(); 

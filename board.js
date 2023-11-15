@@ -17,6 +17,7 @@ class Board{
         this.marginY = marginY; 
         this.cardArray = []; 
         this.flippedCards = []; 
+        this.playingCards = this.number; 
         this.animationCards = []; 
         this.finalX = []; 
         this.finalY = []; 
@@ -55,63 +56,37 @@ class Board{
         rect(this.x, this.y, this.w, this.h); 
         switch(this.stage){
             case 0:
-                // this.landingAnimation(); 
-                console.log("stage 0"); 
                 this.cardDeck(); 
                 break; 
             case 1: 
-                // draw , shuffle and display cards in their position + animation
-                console.log("stage 1"); 
                 this.dealCards(); 
                 break; 
             case 2:
-                console.log("stage 2"); 
                 this.checkingMatch(); 
                 break;
                 // game play 
-            // case 3: 
-                // game over, restart options
+            case 3: 
+                console.log("GAME OVER"); 
         }
     }
 
-    checkingMatch() {
-        for (let card of cardArray) {
-            card.update(); // Update the card's state (for the flip animation)
-            card.display(); // Display the card
-    
-            // Check if the card is clicked, not already flipped, and not currently flipping
-            if (!card.isFaceUp && !card.flipping && !card.isMatched && 
-                mouseX < card.w + card.x && mouseX > card.x && 
-                mouseY < card.y + card.h && mouseY > card.y) {
-                
-                if (this.flippedCards.length < 2) {
-                    card.flipCard();
-                    this.flippedCards.push(card);
-                }
+    checkingMatch(){
+        if(this.playingCards > 0){
+            for(let card of this.cardArray){
+                card.canFlip = true; 
+                card.display(); 
             }
+        // cards are displayed
+        // two cards need to be flipped 
+        // once two cards are flipped they need to be compared (in this time, no more card can be flipped)
+        // if the two cards are a match, they remain facing up and removed from the playing cards set 
+        // if the two cards are not a match, they are flipped back over 
+        // this keeps going until all cards are flipped 
+        } 
+        else{
+            this.stage = 3; 
         }
-    
-        // If two cards are flipped, check for a match
-        if (this.flippedCards.length === 2 && !this.flippedCards[0].flipping && !this.flippedCards[1].flipping) {
-            this.checkForMatch();
-        }
-    }
-    
-    checkForMatch() {
-        // Check for a match based on a property like backImgIdx
-        if (this.flippedCards[0].backImgIdx === this.flippedCards[1].backImgIdx) {
-            // Cards match
-            this.flippedCards.forEach(c => c.isMatched = true);
-        } else {
-            // Cards don't match, flip them back over after a delay
-            setTimeout(() => {
-                this.flippedCards.forEach(c => {
-                    c.isFaceUp = false; // Flip back the card
-                    c.flipping = true; // Start the flip animation
-                });
-            }, 1000); // Set a delay of 1 second
-        }
-        this.flippedCards = []; // Reset the flipped cards array
+       
     }
     
 
@@ -119,16 +94,14 @@ class Board{
         if (!this.dealStartTime) this.dealStartTime = millis();
         let elapsedTime = millis() - this.dealStartTime;
         
-        let delay = 150; // Delay in milliseconds between each rectangle animation
+        let delay = 100; // Delay in milliseconds between each rectangle animation
 
         for (let i = 0; i < this.number; i++) {
             // Calculate the start time for each rectangle's animation
-            let rectStartTime = 2000 + i * delay;
+            let rectStartTime = 1000 + i * delay;
             if (elapsedTime <= rectStartTime) {
-                console.log("card deck displayed in initial position"); 
                 this.cardArray[i].display();
             } else {
-                console.log("cards are starting to spread out"); 
                 this.cardArray[i].x = lerp(this.cardArray[i].x, this.finalX[i], 0.1);
                 this.cardArray[i].y = lerp(this.cardArray[i].y, this.finalY[i], 0.1);
                 this.cardArray[i].display();
@@ -143,7 +116,6 @@ class Board{
     cardDeck(){
         if(this.animationIsOn){
             for(let i = 0; i < this.number; i++){
-                console.log(i, this.cardArray[i].x, this.cardArray[i].y); 
                 this.cardArray[i].display();
             }
         }
