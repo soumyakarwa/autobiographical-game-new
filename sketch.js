@@ -15,14 +15,22 @@ var startingYPos;
 
 function preload(){
   bodyFont = loadFont("./fonts/Cardo/Cardo-Regular.ttf");
-  frontImg = loadImage("./assets/cardCover.jpg");
+  frontImg = loadImage("./assets/qutubminar.jpeg");
   backImg[0] = loadImage("./assets/painting1.jpeg"); 
   backImg[1] = loadImage("./assets/painting2.jpeg"); 
-  backImg[2] = loadImage("./assets/painting3.png"); 
+  backImg[2] = loadImage("./assets/painting3.jpeg"); 
   backImg[3] = loadImage("./assets/painting4.jpeg"); 
   backImg[4] = loadImage("./assets/painting5.jpeg"); 
   backImg[5] = loadImage("./assets/painting6.jpeg"); 
   backImg[6] = loadImage("./assets/painting7.jpeg"); 
+  backImg[7] = loadImage("./assets/painting7.jpeg"); 
+  backImg[8] = loadImage("./assets/painting8.jpeg"); 
+  backImg[9] = loadImage("./assets/painting9.jpeg"); 
+  backImg[10] = loadImage("./assets/painting10.jpeg"); 
+  backImg[11] = loadImage("./assets/painting11.jpeg"); 
+  backImg[12] = loadImage("./assets/painting12.jpeg"); 
+  backImg[13] = loadImage("./assets/painting13.jpeg"); 
+  // backImg[14] = loadImage("./assets/painting14.jpeg"); 
   // frontImg = "./assets/cardCover.jpg";
   // backImg[0] = "./assets/painting1.jpeg"; 
   // backImg[1] = "./assets/painting2.jpeg"; 
@@ -76,11 +84,11 @@ function mousePressed(){
     if(checkFlip){
       cardArray[i].flipped = !cardArray[i].flipped; 
     }
-    console.log(i, cardArray[i].flipped); 
   }
 }
 
 function setupHelper(){
+  console.log(backImg.length); 
   board = new Board(numberOfCards, boardRect.x, boardRect.y, boardRect.width, boardRect.height, frontImg, backImg, remToPixels(1), remToPixels(1), numberOfRows);  
   control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board); 
   cardArray = board.boardSetup(); 

@@ -12,7 +12,7 @@ class Board{
         this.numberOfRows = numberOfRows;
         
         this.rectWidth = 72; 
-        this.rectHeight = 102; 
+        this.rectHeight = 100; 
         this.marginX = marginX;
         this.marginY = marginY; 
         this.cardArray = []; 
@@ -22,6 +22,10 @@ class Board{
         this.finalX = []; 
         this.finalY = []; 
         this.dealStartTime; 
+
+        // for(let i = 0; i < this.number; i++){
+        //     this.playingCards[i] = i; 
+        // }
 
         let currX = this.x+5*this.marginX+this.rectWidth; 
         let currY = this.y+this.marginY; 
@@ -64,31 +68,57 @@ class Board{
             case 2:
                 this.checkingMatch(); 
                 break;
-                // game play 
             case 3: 
-                console.log("GAME OVER"); 
+                this.gameOver(); 
+                break; 
         }
     }
 
-    checkingMatch(){
-        if(this.playingCards > 0){
-            for(let card of this.cardArray){
-                card.canFlip = true; 
-                card.display(); 
-            }
-        // cards are displayed
-        // two cards need to be flipped 
-        // once two cards are flipped they need to be compared (in this time, no more card can be flipped)
-        // if the two cards are a match, they remain facing up and removed from the playing cards set 
-        // if the two cards are not a match, they are flipped back over 
-        // this keeps going until all cards are flipped 
-        } 
-        else{
-            this.stage = 3; 
+    gameOver(){
+        for(let card of this.cardArray){
+            card.display(); 
+            card.canFlip = false; 
         }
-       
     }
+
+    checkingMatch() {
+        if (this.playingCards != 0) {
+            for (let card of this.cardArray) {
+                if(!card.isMatched){
+                    card.canFlip = true; 
+                }
+                card.display();
+            }
     
+            this.flippedCards = this.cardArray.filter(card => card.isFaceUp && !card.isMatched);
+    
+            if (this.flippedCards.length == 2) {
+                // Lock flipping of other cards
+                this.cardArray.forEach(card => card.canFlip = false);
+    
+                // Check for a match
+                if (this.flippedCards[0].backImgIdx === this.flippedCards[1].backImgIdx) {
+                    // Cards match 
+                    console.log("match is found"); 
+                    this.flippedCards.forEach(card => card.isMatched = true);
+                    this.playingCards -= 2;
+                } else {
+                    // Cards do not match - flip them back over after a short delay
+                    setTimeout(() => {
+                        this.flippedCards.forEach(card => card.flipping = true);
+                    }, 1000);
+                }
+    
+                // Reset flipped cards array after the check
+                setTimeout(() => {
+                    this.flippedCards = [];
+                    // this.cardArray.forEach(card => card.canFlip = true);
+                }, 1000); 
+            }
+        } else {
+            this.stage = 3; // Proceed to the next stage of the game
+        }
+    }
 
     dealCards(){
         if (!this.dealStartTime) this.dealStartTime = millis();
@@ -166,8 +196,9 @@ class Board{
     drawCards(){
         let idx = 0; 
         for(let backImage of this.backImages){
-            for(let j = 0; j < this.number/7; j++){
+            for(let j = 0; j < this.number/this.backImages.length; j++){
                 this.cardArray.push(new Card(this.x+this.marginX, this.y+this.h-this.rectHeight-this.marginY, this.rectWidth, this.rectHeight, this.frontImg, backImage, idx)); 
+                console.log(idx); 
             }
             idx++; 
         }
@@ -176,14 +207,18 @@ class Board{
 
     shuffleCards(){
         let currentIndex = this.cardArray.length; 
-        let temporaryValue; 
+        let temporaryValue = []; 
         let randomIndex;
         while (currentIndex !== 0) {
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex -= 1;
-            temporaryValue = this.cardArray[currentIndex].backImg;
+            temporaryValue[0] = this.cardArray[currentIndex].backImg;
             this.cardArray[currentIndex].backImg = this.cardArray[randomIndex].backImg;
-            this.cardArray[randomIndex].backImg = temporaryValue;
+            this.cardArray[randomIndex].backImg = temporaryValue[0];
+
+            temporaryValue[1] = this.cardArray[currentIndex].backImgIdx; 
+            this.cardArray[currentIndex].backImgIdx = this.cardArray[randomIndex].backImgIdx;
+            this.cardArray[randomIndex].backImgIdx = temporaryValue[1];
         } 
     return this.cardArray;
     }

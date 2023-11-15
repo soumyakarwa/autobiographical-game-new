@@ -17,21 +17,7 @@ class Card{
         this.flipping = false; 
         this.backImgIdx = backImgIdx; 
     }
-
-    // display(){
-    //     if(this.isFaceUp){
-    //         image(this.backImg, this.x, this.y, this.w, this.h);
-    //     }
-    //     else{
-    //         image(this.frontImg, this.x, this.y, this.w, this.h);
-    //     }
-    //     // let imgToShow = this.isFaceUp ? this.backImg : this.frontImg;
-    //     // imgToShow.position(this.x, this.y);
-    //     // imgToShow.size(this.w, this.h);
-    //     // // imgToShow.style('border', '1px solid black'); // Add CSS styles
-    //     // imgToShow.show();
-    // }
-
+    
     display() {
         if (this.flipping) {
             this.scaleX -= 0.05; // Adjust this for flip speed
