@@ -5,6 +5,9 @@ var cardArray;
 var bodyFont; 
 var frontImg; 
 var backImg = []; 
+var paintings = {frontImage:"", backImages:[]}; 
+var movies = {frontImage:"", backImages:[]}; 
+var options = [paintings, movies]; 
 var boardRect ={x:0, y:0, width:0, height:0};  
 var cardRect ={x:0, y:0, width:0, height:0};  
 var numberOfCards = 56; 
@@ -15,30 +18,14 @@ var startingYPos;
 
 function preload(){
   bodyFont = loadFont("./fonts/Cardo/Cardo-Regular.ttf");
-  frontImg = loadImage("./assets/qutubminar.jpeg");
-  backImg[0] = loadImage("./assets/painting1.jpeg"); 
-  backImg[1] = loadImage("./assets/painting2.jpeg"); 
-  backImg[2] = loadImage("./assets/painting3.jpeg"); 
-  backImg[3] = loadImage("./assets/painting4.jpeg"); 
-  backImg[4] = loadImage("./assets/painting5.jpeg"); 
-  backImg[5] = loadImage("./assets/painting6.jpeg"); 
-  backImg[6] = loadImage("./assets/painting7.jpeg"); 
-  backImg[7] = loadImage("./assets/painting7.jpeg"); 
-  backImg[8] = loadImage("./assets/painting8.jpeg"); 
-  backImg[9] = loadImage("./assets/painting9.jpeg"); 
-  backImg[10] = loadImage("./assets/painting10.jpeg"); 
-  backImg[11] = loadImage("./assets/painting11.jpeg"); 
-  backImg[12] = loadImage("./assets/painting12.jpeg"); 
-  backImg[13] = loadImage("./assets/painting13.jpeg"); 
-  // backImg[14] = loadImage("./assets/painting14.jpeg"); 
-  // frontImg = "./assets/cardCover.jpg";
-  // backImg[0] = "./assets/painting1.jpeg"; 
-  // backImg[1] = "./assets/painting2.jpeg"; 
-  // backImg[2] = "./assets/painting3.png"; 
-  // backImg[3] = "./assets/painting4.jpeg"; 
-  // backImg[4] = "./assets/painting5.jpeg"; 
-  // backImg[5] = "./assets/painting6.jpeg"; 
-  // backImg[6] = "./assets/painting7.jpeg"; 
+  for (let i = 0; i < 14; i++) {
+    paintings.backImages[i] = loadImage(`./assets/painting${i + 1}.jpeg`);
+  }
+  paintings.frontImage = loadImage("./assets/qutubminar.jpeg");
+  for (let i = 0; i < 14; i++) {
+    movies.backImages[i] = loadImage(`./assets/movie${i + 1}.jpeg`);
+  }
+  movies.frontImage = loadImage("./assets/camera.jpeg");
 }
 
 function setup() {
@@ -49,7 +36,7 @@ function setup() {
 }
 
 function draw() {
-  background(255); 
+  background("#8C4242"); 
   noStroke(); 
   control.display(); 
   board.gamePlay(); 
@@ -79,19 +66,18 @@ function grid() {
 
 function mousePressed(){
   let checkFlip; 
-  for(let i = 0; i < cardArray.length; i++){
-    checkFlip = cardArray[i].flipCard();
+  for(let i = 0; i < control.cardArray.length; i++){
+    checkFlip = control.cardArray[i].flipCard();
     if(checkFlip){
-      cardArray[i].flipped = !cardArray[i].flipped; 
+      control.cardArray[i].flipped = !control.cardArray[i].flipped; 
     }
   }
 }
 
 function setupHelper(){
-  console.log(backImg.length); 
+  textFont(bodyFont); 
   board = new Board(numberOfCards, boardRect.x, boardRect.y, boardRect.width, boardRect.height, frontImg, backImg, remToPixels(1), remToPixels(1), numberOfRows);  
-  control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board); 
-  cardArray = board.boardSetup(); 
+  control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board, remToPixels(1), remToPixels(1), options, cardArray); 
 }
 
 function setupCalculations(){

@@ -1,6 +1,6 @@
 class Board{
     constructor(number, x, y, w, h, frontImg, backImages, marginX, marginY, numberOfRows){
-        this.stage = 0; 
+        this.stage = -1; 
         this.number = number; 
         this.x = x; 
         this.y = y; 
@@ -22,11 +22,6 @@ class Board{
         this.finalX = []; 
         this.finalY = []; 
         this.dealStartTime; 
-
-        // for(let i = 0; i < this.number; i++){
-        //     this.playingCards[i] = i; 
-        // }
-
         let currX = this.x+5*this.marginX+this.rectWidth; 
         let currY = this.y+this.marginY; 
         for(let i = 0; i < this.number; i++){
@@ -56,8 +51,8 @@ class Board{
     }
 
     gamePlay(){
-        fill(200, 100, 100)
-        rect(this.x, this.y, this.w, this.h); 
+        // fill(200, 100, 100)
+        // rect(this.x, this.y, this.w, this.h); 
         switch(this.stage){
             case 0:
                 this.cardDeck(); 
@@ -95,28 +90,23 @@ class Board{
             if (this.flippedCards.length == 2) {
                 // Lock flipping of other cards
                 this.cardArray.forEach(card => card.canFlip = false);
-    
+                this.flippedCards.forEach(card => console.log(card.backImgIdx)); 
                 // Check for a match
                 if (this.flippedCards[0].backImgIdx === this.flippedCards[1].backImgIdx) {
                     // Cards match 
-                    console.log("match is found"); 
+                    console.log("match found"); 
                     this.flippedCards.forEach(card => card.isMatched = true);
                     this.playingCards -= 2;
                 } else {
                     // Cards do not match - flip them back over after a short delay
                     setTimeout(() => {
                         this.flippedCards.forEach(card => card.flipping = true);
-                    }, 1000);
+                        this.flippedCards = [];
+                    }, 750);
                 }
-    
-                // Reset flipped cards array after the check
-                setTimeout(() => {
-                    this.flippedCards = [];
-                    // this.cardArray.forEach(card => card.canFlip = true);
-                }, 1000); 
             }
         } else {
-            this.stage = 3; // Proceed to the next stage of the game
+            this.stage = 3; 
         }
     }
 

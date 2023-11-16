@@ -1,14 +1,11 @@
 class Card{
     constructor(x, y, w, h, frontImg, backImg, backImgIdx){
-        // frontImg, backImgSrc){
         this.x = x; 
         this.y = y; 
         this.w = w;
         this.h = h; 
         this.frontImg = frontImg; 
         this.backImg = backImg; 
-        // this.frontImg = createImg(frontImgSrc, 'Front Image').hide();
-        // this.backImg = createImg(backImgSrc, 'Back Image').hide();
         this.isFaceUp = false; 
         this.canFlip = false; 
         this.isMatched = false; 
@@ -53,14 +50,5 @@ class Card{
         }
         return false; 
     }
-    
-    // flipCard(){
-    //     // if(canFlip){
-    //         if(mouseX < this.w+this.x && mouseX > this.x && mouseY < this.y+this.h && mouseY > this.y){
-    //             if(mouseIsPressed){
-    //                 this.isFaceUp = !this.isFaceUp;
-    //             }
-    //         }
-    //     // }
-    // }
+
 }
