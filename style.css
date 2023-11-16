@@ -9,11 +9,11 @@ canvas {
 }
 
 #canvas-container {
-  display: flex; /* Enable Flexbox */
-  flex-direction: row; /* Align children in a row */
-  justify-content: space-between; /* Space between the children */
-  align-items: stretch; /* Stretch children to fill the height */
-  margin: 0.5rem; /* Margin around the entire container */
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-between; 
+  align-items: stretch; 
+  margin: 0.5rem; 
   max-width: calc(100vw - 1rem);
   max-height: calc(100vh - 1rem);
   overflow: hidden;
@@ -21,15 +21,13 @@ canvas {
 
 .button {
   text-align: 'center';
-  /* background-color: #772E25;
-  color: #FFFFFF;  */
   border: none; 
   box-shadow: none; 
   padding-left: 0.75rem; 
   padding-right: 0.75rem; 
   padding-top: 0.5rem; 
   padding-bottom: 0.5rem; 
-  font-family: "Cardo-Regular";
+  font-family: "NanumGothicCoding-Regular"; 
   font-size: 0.75rem; 
   transition: background-color 0.3s ease, color 0.3s ease;
   cursor: pointer; 
@@ -44,4 +42,7 @@ canvas {
 @font-face {
   font-family: "Cardo-Regular";
   src: "./fonts/Cardo/Cardo-Regular.ttf";
+
+  font-family: "NanumGothicCoding-Regular"; 
+  src: "./fonts/Nanum/NanumGothicCoding-Regular.ttf"; 
 }

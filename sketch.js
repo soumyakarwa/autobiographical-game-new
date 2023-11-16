@@ -5,10 +5,11 @@ var cardArray;
 var bodyFont; 
 var frontImg; 
 var backImg = []; 
-//colors in order of background color, button background color, button text color, regular text color
-var paintings = {frontImage:"", backImages:[], colors:["#3C5473", "#8C4242", "#FFFDF2", "#403A3C"]}; 
-var movies = {frontImage:"", backImages:[], colors:["#D991B3", "#BF0B2C", "#FFFDF2", "#D90479", ]}; 
-var options = [paintings, movies]; 
+//background color, button background color, button text color, stroke color, regular text color
+var paintings = {frontImage:"", backImages:[], colors:["#3C5473", "#8C4242", "#FFFDF2", "#FFFDF2", "#FFFDF2"]}; 
+var movies = {frontImage:"", backImages:[], colors:["#D991B3", "#BF0B2C", "#FFFDF2", "#D90479", "#FFFDF2"]}; 
+var pantone = {frontImage:"", backImages:[], colors:["#212426", "#FFFDF2", "#212426", "#FFFDF2", "#FFFDF2"]}; 
+var options = [paintings, movies, pantone]; 
 var boardRect ={x:0, y:0, width:0, height:0};  
 var cardRect ={x:0, y:0, width:0, height:0};  
 var numberOfCards = 56; 
@@ -19,15 +20,19 @@ var startingYPos;
 var backgroundColor = "#FFFDF2"; 
 
 function preload(){
-  bodyFont = loadFont("./fonts/Cardo/Cardo-Regular.ttf");
+  bodyFont = loadFont("./fonts/Nanum/NanumGothicCoding-Regular.ttf");
+  paintings.frontImage = loadImage("./assets/qutubminar.jpeg");
   for (let i = 0; i < 14; i++) {
     paintings.backImages[i] = loadImage(`./assets/painting${i + 1}.jpeg`);
   }
-  paintings.frontImage = loadImage("./assets/qutubminar.jpeg");
+  movies.frontImage = loadImage("./assets/camera.png");
   for (let i = 0; i < 14; i++) {
     movies.backImages[i] = loadImage(`./assets/movie${i + 1}.jpeg`);
   }
-  movies.frontImage = loadImage("./assets/camera.jpeg");
+  pantone.frontImage = loadImage("./assets/cover3.jpeg");
+  for (let i = 0; i < 14; i++) {
+    pantone.backImages[i] = loadImage(`./assets/pantone${i + 1}.jpeg`);
+  }
 }
 
 function setup() {

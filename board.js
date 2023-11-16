@@ -141,41 +141,7 @@ class Board{
             this.stage = 1; 
         }
         
-    }
-
-    landingAnimation(){
-        let tempX; 
-        let tempY; 
-        for (let i = 0; i < this.number; i++){
-            if (this.animationIsOn) {
-                // Normal animation
-                this.animationCards[i].angle = frameCount * 0.015 + i * (TWO_PI / this.number);
-                this.animationCards[i].radius = noise(i, frameCount * 0.01) * 5*this.w/8;
-              } else {
-                // Animate towards bottom
-                this.animationCards[i].radius = lerp(this.animationCards[i].radius, 0, 0.03);
-                this.animationCards[i].angle = lerp(this.animationCards[i].angle, -HALF_PI/4, 0.03);
-              }
-
-            // Calculate position based on angle and radius
-            tempX = this.x +  this.w / 2 + cos(this.animationCards[i].angle) * this.animationCards[i].radius;
-            tempY = this.y + this.h / 2 + sin(this.animationCards[i].angle) * this.animationCards[i].radius;
-
-            // Apply transformation and rotation
-            push();
-            translate(tempX, tempY);
-            rotate(this.animationCards[i].angle + HALF_PI/4); // Rotate the rectangle to align with the circle's tangent
-            this.cardArray[i].x = 0; 
-            this.cardArray[i].y = 0; 
-            this.cardArray[i].isFaceUp = true; 
-            this.cardArray[i].display(); 
-            pop();
-        }
-
-        if (this.animationCards.every(card => Math.abs(card.radius) < 0.01)) {
-            this.stage = 1;
-        }   
-    }   
+    } 
 
     endAnimation(){
         this.animationIsOn = false;
