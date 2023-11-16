@@ -1,7 +1,7 @@
 html, body {
   margin: 0rem;
   padding: 0;
-  background-color: #8C4242;
+  background-color: #FFFDF2;
 }
 
 canvas {
@@ -21,8 +21,8 @@ canvas {
 
 .button {
   text-align: 'center';
-  background-color: #772E25;
-  color: #FFFFFF; 
+  /* background-color: #772E25;
+  color: #FFFFFF;  */
   border: none; 
   box-shadow: none; 
   padding-left: 0.75rem; 
@@ -34,6 +34,7 @@ canvas {
   transition: background-color 0.3s ease, color 0.3s ease;
   cursor: pointer; 
 }
+
 /* 
 .button:hover{
   background-color: #FFFFFF; 

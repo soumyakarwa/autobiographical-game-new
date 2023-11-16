@@ -51,8 +51,6 @@ class Board{
     }
 
     gamePlay(){
-        // fill(200, 100, 100)
-        // rect(this.x, this.y, this.w, this.h); 
         switch(this.stage){
             case 0:
                 this.cardDeck(); 
@@ -188,7 +186,6 @@ class Board{
         for(let backImage of this.backImages){
             for(let j = 0; j < this.number/this.backImages.length; j++){
                 this.cardArray.push(new Card(this.x+this.marginX, this.y+this.h-this.rectHeight-this.marginY, this.rectWidth, this.rectHeight, this.frontImg, backImage, idx)); 
-                console.log(idx); 
             }
             idx++; 
         }

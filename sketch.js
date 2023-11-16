@@ -5,8 +5,9 @@ var cardArray;
 var bodyFont; 
 var frontImg; 
 var backImg = []; 
-var paintings = {frontImage:"", backImages:[]}; 
-var movies = {frontImage:"", backImages:[]}; 
+//colors in order of background color, button background color, button text color, regular text color
+var paintings = {frontImage:"", backImages:[], colors:["#3C5473", "#8C4242", "#FFFDF2", "#403A3C"]}; 
+var movies = {frontImage:"", backImages:[], colors:["#D991B3", "#BF0B2C", "#FFFDF2", "#D90479", ]}; 
 var options = [paintings, movies]; 
 var boardRect ={x:0, y:0, width:0, height:0};  
 var cardRect ={x:0, y:0, width:0, height:0};  
@@ -15,6 +16,7 @@ var numberOfColumns = 8;
 var numberOfRows; 
 var startingXPos; 
 var startingYPos; 
+var backgroundColor = "#FFFDF2"; 
 
 function preload(){
   bodyFont = loadFont("./fonts/Cardo/Cardo-Regular.ttf");
@@ -36,48 +38,35 @@ function setup() {
 }
 
 function draw() {
-  background("#8C4242"); 
+  if(control.bgColor){
+    background(control.bgColor); 
+  }
+  else{
+    background(backgroundColor); 
+  }
+  
   noStroke(); 
   control.display(); 
   board.gamePlay(); 
-  // stroke(0); 
-  // board.displayCards(cardArray); 
-  // grid(); 
-  // fill(0);  
-  // ellipse(50, 50, 5); 
-  // ellipse(cardHolder.x, cardHolder.y, 5); 
-}
-
-function grid() {
-  push();
-  translate(cardHolder.x, cardHolder.y);
-  let cellWidth = cardHolder.width / 7;
-  let cellHeight = cardHolder.height / 4;
-  for (let i = 0; i <= 7; i++) {
-    let x = i * cellWidth;
-    line(x, 0, x, cardHolder.height);
-  } 
-  for (let j = 0; j <= 4; j++) {
-    let y = j * cellHeight;
-    line(0, y, cardHolder.width, y);
-  }
-  pop();
 }
 
 function mousePressed(){
-  let checkFlip; 
-  for(let i = 0; i < control.cardArray.length; i++){
-    checkFlip = control.cardArray[i].flipCard();
-    if(checkFlip){
-      control.cardArray[i].flipped = !control.cardArray[i].flipped; 
+  if(control.cardArray){
+    let checkFlip; 
+    for(let i = 0; i < control.cardArray.length; i++){
+      checkFlip = control.cardArray[i].flipCard();
+      if(checkFlip){
+        control.cardArray[i].flipped = !control.cardArray[i].flipped; 
+      }
     }
   }
+  
 }
 
 function setupHelper(){
   textFont(bodyFont); 
   board = new Board(numberOfCards, boardRect.x, boardRect.y, boardRect.width, boardRect.height, frontImg, backImg, remToPixels(1), remToPixels(1), numberOfRows);  
-  control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board, remToPixels(1), remToPixels(1), options, cardArray); 
+  control = new Control(cardRect.x, cardRect.y, cardRect.width, cardRect.height, board, remToPixels(1), remToPixels(1), options, cardArray, backgroundColor); 
 }
 
 function setupCalculations(){
