@@ -31,7 +31,7 @@ function preload(){
   }
   pantone.frontImage = loadImage("./assets/cover3.jpeg");
   for (let i = 0; i < 14; i++) {
-    pantone.backImages[i] = loadImage(`./assets/pantone${i + 1}.jpeg`);
+    pantone.backImages[i] = loadImage(`./assets/pantone${i + 1}.png`);
   }
 }
 

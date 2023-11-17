@@ -92,8 +92,6 @@ class Control{
 
     buttonStage2(){
         this.button1.forEach(b => b.hide()); 
-        this.button2.show(); 
-        this.button2.class("button"); 
         this.stageText("Game over! Good job :) ")
     }
 
